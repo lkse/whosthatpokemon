@@ -61,7 +61,7 @@ def main():
     else:
         if args.gen:
             gen = args.gen
-            cries_dir = f"./cries/gen{gen}/"
+            cries_dir = f"./cries/gen {gen}/"
             files = [
                 f
                 for f in os.listdir(cries_dir)
