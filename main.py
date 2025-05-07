@@ -31,6 +31,13 @@ def main():
         const=-1,
         help="Show sound devices or specify device index to use",
     )
+    parser.add_argument(
+        "-v",
+        "--volume",
+        type=float,
+        default=1.0,
+        help="Volume multiplier (0.0 to 1.0, default 1.0)",
+    )
 
     args = parser.parse_args()
 
@@ -103,6 +110,7 @@ def main():
 
     # Play the selected audio file
     data, samplerate = sf.read(audio_path)
+    data = data * args.volume  # Lower the volume if needed
     sd.play(data, samplerate)
     sd.wait()
 
