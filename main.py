@@ -6,6 +6,9 @@ import soundfile as sf
 
 
 def main():
+    # Get the directory where this script is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
     parser = argparse.ArgumentParser(description="Who's That Pokemon?")
     parser.add_argument(
         "-g",
@@ -44,7 +47,7 @@ def main():
                 return
             sd.default.device = device_idx
 
-    last_txt = "./last.txt"
+    last_txt = os.path.join(base_dir, "last.txt")
 
     if args.replay:
         try:
@@ -61,7 +64,7 @@ def main():
     else:
         if args.gen:
             gen = args.gen
-            cries_dir = f"./cries/gen {gen}/"
+            cries_dir = os.path.join(base_dir, f"cries/gen {gen}/")
             files = [
                 f
                 for f in os.listdir(cries_dir)
@@ -74,10 +77,10 @@ def main():
             poke_id = os.path.splitext(chosen_file)[0]
             audio_path = os.path.join(cries_dir, chosen_file)
         else:
-            base_dir = "./cries/"
+            cries_base = os.path.join(base_dir, "cries")
             all_files = []
-            for folder in os.listdir(base_dir):
-                folder_path = os.path.join(base_dir, folder)
+            for folder in os.listdir(cries_base):
+                folder_path = os.path.join(cries_base, folder)
                 if os.path.isdir(folder_path):
                     files = [
                         os.path.join(folder, f)
@@ -90,7 +93,7 @@ def main():
                 return
             chosen_file = random.choice(all_files)
             poke_id = os.path.splitext(os.path.basename(chosen_file))[0]
-            audio_path = os.path.join(base_dir, chosen_file)
+            audio_path = os.path.join(cries_base, chosen_file)
 
         # Store last played file path
         with open(last_txt, "w") as f:
